@@ -9,56 +9,54 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:Wizard ID="SuperCopyWizard" runat="server" ActiveStepIndex="0" Height="508px" Width="655px" OnNextButtonClick="SuperCopyWizard_NextButtonClick">
+        <asp:Wizard ID="SuperCopyWizard" runat="server" ActiveStepIndex="2" Height="336px" Width="655px" OnNextButtonClick="SuperCopyWizard_NextButtonClick" BackColor="#E6E2D8" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="0.8em" OnFinishButtonClick="SuperCopyWizard_FinishButtonClick" OnActiveStepChanged="SuperCopyWizard_ActiveStepChanged">
             <WizardSteps>
-                <asp:WizardStep runat="server" Title="Step 1" ID="Step1">
-                    Please select a Channel<br />
-                    <asp:DropDownList ID="uxChannel" runat="server">
-                    </asp:DropDownList>
+                    <asp:WizardStep runat="server" Title="Select" ID="Start">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    Current Channel:<br />
+                                    &nbsp;<asp:DropDownList ID="uxChannel" runat="server">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr valign =top>
+                                <td>
+                                    Source Day:<br />
+                                    <asp:Calendar ID="uxSourceDay" runat="server" OnSelectionChanged="uxStartDate_SelectionChanged">
+                                        <TodayDayStyle BackColor="Silver" />
+                                        <SelectedDayStyle BackColor="Navy" />
+                                    </asp:Calendar>
+                                    <asp:Label ID="uxStartDateError" runat="server" ForeColor="Red"></asp:Label>
+                                    <br />
+                                    <asp:Label ID="uxNumberOfSourceRuns" runat="server" Text="Please select a source day to continue."></asp:Label>
+                                </td>
+                                <td>
+                                    End date:<br />
+                                    <asp:Calendar ID="uxEndDate" runat="server" OnSelectionChanged="uxEndDate_SelectionChanged">
+                                        <TodayDayStyle BackColor="Silver" />
+                                        <SelectedDayStyle BackColor="Navy" />
+                                    </asp:Calendar>
+                                    <asp:Label ID="uxEndDateError" runat="server" ForeColor="Red"></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <asp:Label ID="uxDateCount" runat="server"></asp:Label>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
                 </asp:WizardStep>
-                <asp:WizardStep runat="server" Title="Step 2" ID="Step2">
-                    Current Channel:<br />
-                    <asp:Label ID="uxCurrentChannel" runat="server" Text="None"></asp:Label>
-                    <br />
-                    <br />
-                    Please select the source day:<br />
-                    <asp:Calendar ID="uxSourceDate" runat="server" OnSelectionChanged="uxSourceDate_SelectionChanged">
-                        <SelectedDayStyle BackColor="Navy" />
-                    </asp:Calendar>
-                    <br />
-                    <asp:Label ID="uxNumberOfSourceRuns" runat="server" Text="Please select a source day to continue."></asp:Label>
-                </asp:WizardStep>
-                <asp:WizardStep runat="server" Title="Step 3" ID="Step3">
-                    Please select destination dates<br />
-                    <br />
-                    Start:<br />
-                    <asp:Calendar ID="uxStartDate" runat="server" OnSelectionChanged="uxStartDate_SelectionChanged">
-                        <TodayDayStyle BackColor="Silver" />
-                        <SelectedDayStyle BackColor="Navy" />
-                    </asp:Calendar>
-                    <asp:Label ID="uxStartDateError" runat="server" ForeColor="Red"></asp:Label>
-                    <br />
-                    <br />
-                    <br />
-                    End:<asp:Calendar ID="uxEndDate" runat="server" OnSelectionChanged="uxEndDate_SelectionChanged">
-                        <TodayDayStyle BackColor="Silver" />
-                        <SelectedDayStyle BackColor="Navy" />
-                    </asp:Calendar>
-                    <asp:Label ID="uxEndDateError" runat="server" ForeColor="Red"></asp:Label>
-                    <br />
-                    <br />
-                    <asp:Label ID="uxDateCount" runat="server"></asp:Label>
-                    <br />
-                </asp:WizardStep>
-                <asp:WizardStep ID="Step4" runat="server" Title="Step 4">
+                
+                <asp:WizardStep ID="Confirm" runat="server" Title="Confirm">
                     SuperCopy is ready to run.<br />
                     <br />
                     You are about to copy the programing on
                     <asp:Label ID="uxSourceDateName" runat="server"></asp:Label>
-                    on
-                    <asp:Label ID="uxChannelName1" runat="server"></asp:Label>
+                    &nbsp;on
+                    <asp:Label ID="uxCurrentChannelName" runat="server"></asp:Label>
                     .<br />
-                    <br />
                     The programing on 
                     <asp:Label ID="uxChannelName2" runat="server"></asp:Label>
                     &nbsp;will be deleted, and replaced, from
@@ -66,16 +64,31 @@
                     &nbsp;to
                     <asp:Label ID="uxDestEndDate" runat="server"></asp:Label>
                     .<br />
-                    <br />
                     If you are sure you want to do this, press Next</asp:WizardStep>
-                <asp:WizardStep ID="Step5" runat="server" Title="Confirm">
+                <asp:WizardStep ID="Review" runat="server" Title="Review">
                     Removed
-                    <asp:Label ID="uxRemovedRunCount" runat="server"></asp:Label>
-                    &nbsp;runs from the schedule.</asp:WizardStep>
+                    <asp:Label ID="uxRemovedCount" runat="server"></asp:Label>
+                    &nbsp;runs from the schedule.<br />
+                    <br />
+                    Added
+                    <asp:Label ID="uxAddedCount" runat="server"></asp:Label>
+                    runs to the schedule.<br />
+                    <br />
+                    <asp:Label ID="uxError" runat="server" ForeColor="Red"></asp:Label>
+                    <br />
+                    <br />
+                    Click finish to return to the main menu.</asp:WizardStep>
             </WizardSteps>
             <HeaderTemplate>
                 Welcome to SuperCopy
             </HeaderTemplate>
+            <StepStyle BackColor="#F7F6F3" BorderColor="#E6E2D8" BorderStyle="Solid" BorderWidth="2px" />
+            <SideBarStyle BackColor="#1C5E55" Font-Size="0.9em" VerticalAlign="Top" Width="100px"/>
+            <NavigationButtonStyle BackColor="White" BorderColor="#C5BBAF" BorderStyle="Solid"
+                BorderWidth="1px" Font-Names="Verdana" Font-Size="0.8em" ForeColor="#1C5E55" />
+            <SideBarButtonStyle ForeColor="White" />
+            <HeaderStyle BackColor="#666666" BorderColor="#E6E2D8" BorderStyle="Solid" BorderWidth="2px"
+                Font-Bold="True" Font-Size="0.9em" ForeColor="White" HorizontalAlign="Center" />
         </asp:Wizard>
         &nbsp;</div>
     </form>
