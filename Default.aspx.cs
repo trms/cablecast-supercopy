@@ -26,7 +26,8 @@ public partial class _Default : System.Web.UI.Page
 	protected void Page_Load(object sender, EventArgs e)
     {
 		//Get the list of Channels from the Cablecast Database, add them to the Drop Down
-		PopulateChannelList();
+		if(SuperCopyWizard.ActiveStepIndex == 0 && this.IsPostBack == false)
+			PopulateChannelList();
 
 		//Since we are not ready to continue, disable the Next Button for now.
 		NextButtonEnabled(false);
@@ -37,10 +38,13 @@ public partial class _Default : System.Web.UI.Page
 		if (SuperCopyWizard.ActiveStepIndex == 0)
 		{
 			//The user clicked next on the first step, get the second step ready to go
-			
+			//Save the selected channel name
+			m_CurrentChannelID = int.Parse(uxChannel.SelectedValue);
+			m_CurrentChannelName = uxChannel.SelectedItem.Text;
+
 			//Set the text of the various labels
-			uxChannelName2.Text = uxChannel.SelectedItem.Text;
-			uxCurrentChannelName.Text = uxChannel.SelectedItem.Text;
+			uxChannelName2.Text = m_CurrentChannelName;
+			uxCurrentChannelName.Text = m_CurrentChannelName;
 			uxSourceDateName.Text = uxSourceDay.SelectedDate.ToShortDateString();
 			uxDestStartDate.Text = uxSourceDay.SelectedDate.AddDays(1).ToShortDateString();
 			uxDestEndDate.Text = uxEndDate.SelectedDate.ToShortDateString();
@@ -69,7 +73,7 @@ public partial class _Default : System.Web.UI.Page
 				//Remove the runs from the schedule for the selected days.
 				int RemovedRuns =
 					ClearSchedule(
-						int.Parse(uxChannel.SelectedValue),
+						m_CurrentChannelID,
 						uxSourceDay.SelectedDate.AddDays(1),
 						uxEndDate.SelectedDate);
 
@@ -79,7 +83,7 @@ public partial class _Default : System.Web.UI.Page
 				//Copy the schedule for the selected days
 				int AddedRuns =
 					CopySchedule(
-						int.Parse(uxChannel.SelectedValue),
+						m_CurrentChannelID,
 						uxSourceDay.SelectedDate,
 						uxEndDate.SelectedDate);
 
@@ -100,10 +104,7 @@ public partial class _Default : System.Web.UI.Page
 	protected void uxSourceDate_SelectionChanged(object sender, EventArgs e)
 	{
 		uxNumberOfSourceRuns.Text = NumberOfRunsDescription(
-			GetNumberOfRuns(
-			int.Parse(
-				uxChannel.SelectedValue),
-				uxSourceDay.SelectedDate));
+			GetNumberOfRuns(m_CurrentChannelID, uxSourceDay.SelectedDate));
 	}
 
 	protected void uxStartDate_SelectionChanged(object sender, EventArgs e)
@@ -377,6 +378,24 @@ public partial class _Default : System.Web.UI.Page
 	{
 		get { return ViewState["StepCompleted"] == null ? 0 : (int)ViewState["StepCompleted"]; }
 		set { ViewState["StepCompleted"] = value; }
+	}
+
+	/// <summary>
+	/// Keeps track of the currently selected channel
+	/// </summary>
+	private int m_CurrentChannelID
+	{
+		get { return ViewState["CurrentChannelID"] == null ? 0 : (int)ViewState["CurrentChannelID"]; }
+		set { ViewState["CurrentChannelID"] = value; }
+	}
+
+	/// <summary>
+	/// Keeps track of the current channel's name
+	/// </summary>
+	private string m_CurrentChannelName
+	{
+		get { return ViewState["CurrentChannelName"] == null ? string.Empty : ViewState["CurrentChannelName"].ToString(); }
+		set { ViewState["CurrentChannelName"] = value; }
 	}
 	#endregion
 }

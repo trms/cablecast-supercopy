@@ -57,13 +57,13 @@
                     &nbsp;on
                     <asp:Label ID="uxCurrentChannelName" runat="server"></asp:Label>
                     .<br />
-                    The programing on 
+                    <p style="font-weight:bold; color:Red">The programing on 
                     <asp:Label ID="uxChannelName2" runat="server"></asp:Label>
                     &nbsp;will be deleted, and replaced, from
                     <asp:Label ID="uxDestStartDate" runat="server"></asp:Label>
                     &nbsp;to
                     <asp:Label ID="uxDestEndDate" runat="server"></asp:Label>
-                    .<br />
+                    .<p/>
                     If you are sure you want to do this, press Next</asp:WizardStep>
                 <asp:WizardStep ID="Review" runat="server" Title="Review">
                     Removed
