@@ -34,4 +34,6 @@ In the IIS applet, navigate to <Web Site Root>/Cablecast/Web/Plugins, right clic
 
 Under 'Application' click [Create].  Click [OK].
 
+In the Services Control Panel, set the "Distributed Transaction Coordinator" service to the startup type of "Automatic", and start it if it hasn't been already.
+
 That should be it!
