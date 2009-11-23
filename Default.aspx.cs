@@ -195,7 +195,7 @@ public partial class _Default : System.Web.UI.Page
 						FROM Schedule
 						WHERE (Schedule.ChannelID = " + channelID + @")
 						AND runDateTime >= DATEADD(dd,0, datediff(dd,0,'" + sourceDay.ToShortDateString() + @"'))
-						AND runDateTime <= DATEADD([day],1, dateadd(dd,0, datediff(dd,0,'" + sourceDay.ToShortDateString() + @"')))
+						AND runDateTime < DATEADD([day],1, dateadd(dd,0, datediff(dd,0,'" + sourceDay.ToShortDateString() + @"')))
 						AND (IDType = 1);";
 
 				sqlCmd = new SqlCommand(sql, SqlConn);
