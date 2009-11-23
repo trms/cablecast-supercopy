@@ -121,7 +121,7 @@ public partial class _Default : System.Web.UI.Page
 
 	protected void SuperCopyWizard_FinishButtonClick(object sender, WizardNavigationEventArgs e)
 	{
-		Response.Redirect("http://Localhost/Cablecast/Default.aspx");
+		Response.Redirect("/Cablecast/Default.aspx");
 	}
 
 	protected void SuperCopyWizard_ActiveStepChanged(object sender, EventArgs e)
